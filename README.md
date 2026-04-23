@@ -1,4 +1,5 @@
 # Bash Linux Info
+<img width="506" height="286" alt="image" src="https://github.com/user-attachments/assets/e68b84d1-1612-41bf-a33c-6a5ee6a18b1e" />
 
 ## Features  
 - Comprehensive guide on various Bash commands  

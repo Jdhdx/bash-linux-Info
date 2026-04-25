@@ -12,15 +12,7 @@ while true; do
 	read -p "choose: " choose
 	case $choose in 
 		0)
-			sudo apt install lshw -y
-			sudo apt install lscpu -y
-			sudo apt install lsusb -y
-			sudo apt install lspci -y
-			sudo apt install lsscsi -y
-			sudo apt install hdparm -y
-			sudo apt install fdisk -y
-			sudo apt install dmidecode -y
-			sudo apt install inxi -y;;
+			install_requirements;;
 		1)
 			info_menu;;
 		2)
@@ -112,6 +104,26 @@ while true; do
 	esac
 done
 }
+install_requirements() {
+    clear
+    echo "Installing requirements..."
 
+    if [ -f /etc/debian_version ]; then
+        echo "Detected Debian-based system"
+        sudo apt update
+        sudo apt install -y lshw lscpu usbutils pciutils lsscsi hdparm fdisk dmidecode inxi
+
+    elif [ -f /etc/fedora-release ]; then
+        echo "Detected Fedora system"
+        sudo dnf install -y lshw util-linux usbutils pciutils lsscsi hdparm util-linux dmidecode inxi
+
+    else
+        echo "Unsupported distribution"
+        return
+    fi
+
+    echo "Installation complete!"
+    read -p "Press Enter to continue..."
+}
 Main_Menu
 

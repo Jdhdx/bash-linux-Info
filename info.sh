@@ -111,11 +111,32 @@ install_requirements() {
     if [ -f /etc/debian_version ]; then
         echo "Detected Debian-based system"
         sudo apt update
-        sudo apt install -y lshw lscpu usbutils pciutils lsscsi hdparm fdisk dmidecode inxi
+        sudo apt install -y lshw util-linux usbutils pciutils lsscsi hdparm fdisk dmidecode inxi
 
     elif [ -f /etc/fedora-release ]; then
         echo "Detected Fedora system"
         sudo dnf install -y lshw util-linux usbutils pciutils lsscsi hdparm util-linux dmidecode inxi
+
+    elif [ -f /etc/arch-release ]; then
+        echo "Detected Arch-based system"
+        sudo pacman -Sy --noconfirm lshw util-linux usbutils pciutils lsscsi hdparm dmidecode inxi
+
+    elif [ -f /etc/os-release ]; then
+        . /etc/os-release
+
+        case "$ID" in
+            opensuse*|suse)
+                echo "Detected openSUSE system"
+                sudo zypper install -y lshw util-linux usbutils pciutils lsscsi hdparm dmidecode inxi
+                ;;
+            alpine)
+                echo "Detected Alpine Linux"
+                sudo apk add lshw util-linux usbutils pciutils lsscsi hdparm dmidecode inxi
+                ;;
+            *)
+                echo "Unsupported or unknown distro: $ID"
+                ;;
+        esac
 
     else
         echo "Unsupported distribution"
